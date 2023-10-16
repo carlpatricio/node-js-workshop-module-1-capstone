@@ -1,23 +1,22 @@
 import React from 'react';
 
-function DataTable({ data }) {
+function DataTable({ columnHeaders, data }) {
   return (
     <table>
       <thead>
         <tr>
           {/* Assuming your data has keys 'id', 'name', 'value' etc. Adjust as per your dataset */}
-          <th>Rank</th>
-          <th>Country</th>
-          <th>Score</th>
-          {/* Add more <th> elements for other data keys */}
+          {columnHeaders.map((item, key) =>
+            <th key={key}>{item.toUpperCase()}</th>
+          )}
         </tr>
       </thead>
       <tbody>
         {data.map((item, index) => (
           <tr key={index}>
-            <td>{item.rank}</td>
-            <td>{item.country}</td>
-            <td>{item.Score}</td>
+            {columnHeaders.map((key) =>
+              <td>{item[key]}</td>
+            )}
             {/* Add more <td> elements for other data values */}
           </tr>
         ))}
