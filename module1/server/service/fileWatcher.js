@@ -1,7 +1,5 @@
 import chokidar from 'chokidar'
 
-
-
 const runFileWatcher = (file, emitter) => {
     //* watcher instance to watch certain file
     const watcher = chokidar.watch(file, {

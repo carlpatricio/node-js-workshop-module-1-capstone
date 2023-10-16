@@ -3,9 +3,9 @@ import { readFile } from "./readFile.js";
 
 
 const routeHandler = async (req, res) => {
-
-    const routeURL = req.url;
-    switch (routeURL) {
+    const { url } = req;
+    switch (url) {
+        // serve metrics.csv file
         case '/metrics':
             res.writeHead(200, { 'Content-Type': 'text/csv' });
             const newDir = DIR_NAME.substring(0, DIR_NAME.length - 14);

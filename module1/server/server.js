@@ -12,7 +12,7 @@ import startSocket from './service/socketService.js';
 const myEmitter = new MyEmitter();
 const sockserver = new WebSocketServer({ port: SOCKET_PORT });
 /* 
-    loading SSL certs 
+    loading SSL certs -
     generate SSL using openssl, convert to base 64 then add it on .env
 */
 const options = {
@@ -21,9 +21,6 @@ const options = {
 };
 //* server creation
 const server = http.createServer(options, routeHandler);
-server.on('connect', (req, clientSocket, head) => {
-    console.log({ req, clientSocket, head })
-})
 //* running server
 server.listen(PORT, () => {
     console.log(`Secure Server running at https://localhost:${PORT}/`);
