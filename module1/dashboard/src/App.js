@@ -13,8 +13,11 @@ function App() {
         const res = await fetch(`${ENDPOINT}/metrics`)
         const csv = await res.text();
         const jsonCSV = csvToJSON(csv);
-        setColumnHeaders(Object.keys(jsonCSV[0]));
-        setDatasets(jsonCSV.slice(1));
+
+        const newColumnHeaders = jsonCSV.length > 0? Object.keys(jsonCSV[0]): columnHeaders;
+        const newDatasets = jsonCSV.length > 0? jsonCSV.slice(1): [];
+        setColumnHeaders(newColumnHeaders);
+        setDatasets(newDatasets);
         console.log(`Initial Data has been loaded! ${new Date()}`)
     }
 
@@ -26,9 +29,9 @@ function App() {
                 const { data: eventData } = event;
                 const { type, data } = JSON.parse(eventData);
                 if (type === 'csv') {
-                    setColumnHeaders(Object.keys(data[0]));
-                    setDatasets(data.slice(1));
-                    console.log(`Data has been updated! ${new Date()}`)
+                    const newDatasets = data.length > 0? data.slice(1): [];
+                    setDatasets(newDatasets);
+                    console.log(`Data has been updated! ${new Date()}` ,newDatasets)
                 }
             }
             catch (err) {

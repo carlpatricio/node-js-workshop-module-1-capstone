@@ -14,7 +14,6 @@ const csvEventEmitter = (emitter) => {
         const file = await readFile(newDir, CSV_NAME);
         //* convert csv buffer str to json
         const fileJSON = csvToJSON(file.toString());
-
         //* emit socket to ws if socket has value
         if (socket) {
             socket.send(JSON.stringify({ type: 'csv', data: fileJSON }));
