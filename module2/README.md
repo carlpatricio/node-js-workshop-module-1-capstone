@@ -14,9 +14,9 @@ Trainees will build a foundational Express.js application interfacing with Mongo
    - Create a cron job that regularly (e.g., every 5 minutes) posts simulated data to your database, mimicking sensor input.
 
 3. **Threshold-based Notifications**
-   - Set up a notification system using an email (e.g., Nodemailer) or SMS service (e.g., Twilio).
+   - Set up a notification system using an email (e.g., SendGrid) or SMS service (e.g., Twilio).
    - Implement logic to check if incoming sensor data (real or simulated) exceeds predefined thresholds.
-   - Send notifications when certain sensor data points exceed specified thresholds, including information about which threshold was crossed and the current data.
+   - Send notifications when certain sensor data points exceed specified thresholds (e.g > 40 degrees celcius), including information about which threshold was crossed and the current data. For
 
 4. **Logging with Winston/Morgan**
    - Integrate Winston or Morgan for logging all requests to the application.
