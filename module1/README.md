@@ -36,7 +36,7 @@ Develop a real-time monitoring dashboard that displays metrics data from a CSV f
 
 ##### Frontend (Optional):
 
-You can use the included frontend dashboard to test your backend code. Just go to the `dashboard` folder and adjust the `ENDPOINT` accordingly with your backend endpoint.
+You can use the included frontend dashboard to test your backend. Just go to the `dashboard` folder and adjust the `ENDPOINT` accordingly with your backend endpoint and run `npm start`.
 
 1.  HTTP Client:
 
