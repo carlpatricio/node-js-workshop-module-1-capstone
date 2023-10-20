@@ -1,14 +1,13 @@
-const cron = require('node-cron');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import cron from 'node-cron';
 // Load environment variables
 dotenv.config();
 
 // Connect to your MongoDB database
-mongoose.connect(process.env.MONGODB_URI, { 
-    useNewUrlParser: true, 
-    useUnifiedTopology: true 
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 });
 
 // If you haven't already defined your SensorData model in your main application, define it here as well
@@ -34,21 +33,20 @@ function generateSensorData() {
 
 // Scheduled task for sensor data simulation
 // This cron job is set to run every 10 minutes. You can adjust the timing as needed.
-cron.schedule('*/10 * * * *', function() {
+cron.schedule('* * * * *', async function () {
     console.log('Generating simulated sensor data...');
-    
-    // Create new sensor data
-    const newSensorData = generateSensorData();
-    
-    // Save this data to your database
-    newSensorData.save((err, doc) => {
-        if (err) {
-            console.error('Error inserting simulated data:', err);
-        } else {
-            console.log('Simulated data inserted:', doc);
-        }
-    });
+
+    try {
+        // Create new sensor data
+        const newSensorData = await generateSensorData();
+
+        // Save this data to your database
+        await newSensorData.save();
+    }
+    catch (err) {
+        console.log({ err })
+    }
 });
 
 // Keep the script running
-setInterval(() => {}, 1000);
+setInterval(() => { }, 1000);
