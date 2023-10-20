@@ -1,7 +1,7 @@
 # NodeJS Foundation Workshop
 ## Module 2 Mini Project
 
-Lorem ipsum dolor sit amet
+The application will simulate real-time data ingestion, have CRUD functionalities, and send notifications (email or SMS) when sensor data hits certain thresholds. Proper logging, data validation, and error handling will be integral parts of the project.
 
 ## Features
 
