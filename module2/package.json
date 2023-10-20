@@ -4,7 +4,9 @@
   "description": "Trainees will build a foundational Express.js application interfacing with MongoDB. The application will simulate real-time data ingestion, have CRUD functionalities, and send notifications (email or SMS) when sensor data hits certain thresholds. Proper logging, data validation, and error handling will be integral parts of the project.",
   "main": "sensorSimulator.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:sensor": "node sensorSimulator.js",
+    "start:dev": "node "
   },
   "keywords": [],
   "author": "",
