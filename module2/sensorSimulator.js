@@ -6,7 +6,7 @@ import { SensorData } from './src/model/sensorData.model.js';
 dotenv.config();
 
 // Connect to your MongoDB database
-mongoose.connect(process.env.MONGODB_URI, {
+mongoose.connect(`${process.env.MONGODB_URI_PROD}/module2`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
@@ -27,7 +27,7 @@ function generateSensorData() {
 
 // Scheduled task for sensor data simulation
 // This cron job is set to run every 10 minutes. You can adjust the timing as needed.
-cron.schedule('* * * * *', async function () {
+cron.schedule('5 * * * * *', async function () {
     console.log(`Generating simulated sensor data... ${new Date()}`);
 
     try {

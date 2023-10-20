@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:sensor": "node sensorSimulator.js",
-    "start:dev": "nodemon app.js"
+    "start:watch": "nodemon app.js",
+    "start:dev": "node app.js"
   },
   "type": "module",
   "keywords": [],
