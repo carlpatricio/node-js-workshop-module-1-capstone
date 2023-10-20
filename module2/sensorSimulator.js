@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cron from 'node-cron';
+import { SensorData } from './src/model/sensorData.model.js';
 // Load environment variables
 dotenv.config();
 
@@ -10,14 +11,7 @@ mongoose.connect(process.env.MONGODB_URI, {
     useUnifiedTopology: true
 });
 
-// If you haven't already defined your SensorData model in your main application, define it here as well
-const SensorData = mongoose.model('SensorData', new mongoose.Schema({
-    timestamp: Date,
-    location: String,
-    temperature_celsius: Number,
-    humidity_percent: Number,
-    pressure_hpa: Number
-}));
+
 
 // Function to generate random sensor data
 function generateSensorData() {
@@ -34,7 +28,7 @@ function generateSensorData() {
 // Scheduled task for sensor data simulation
 // This cron job is set to run every 10 minutes. You can adjust the timing as needed.
 cron.schedule('* * * * *', async function () {
-    console.log('Generating simulated sensor data...');
+    console.log(`Generating simulated sensor data... ${new Date()}`);
 
     try {
         // Create new sensor data
