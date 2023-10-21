@@ -23,7 +23,7 @@ export const startDatabase = async () => {
 }
 
 export const getServerURI = async () => {
-    const { NODE_DEVELOPMENT: env, MONGODB_DB_NAME: dbName } = process.env
+    const { NODE_ENV: env, MONGODB_DB_NAME: dbName } = process.env
     switch (env) {
         case 'dev':
             const rawURI = process.env[`MONGODB_URI_${env.toUpperCase()}`].split('?')

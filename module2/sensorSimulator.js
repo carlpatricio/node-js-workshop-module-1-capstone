@@ -3,17 +3,24 @@ import mongoose from 'mongoose';
 import cron from 'node-cron';
 import { SensorData } from './src/model/sensorData.model.js';
 import { getServerURI } from './src/util/connection.js';
+import { logger } from './src/util/logger.js';
 // Load environment variables
 dotenv.config();
 
 const startDB = async () => {
     const mongoUri = await getServerURI();
-    console.log({ mongoUri })
-    // Connect to your MongoDB database
-    mongoose.connect(mongoUri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    });
+
+    try {
+        // Connect to your MongoDB database
+        mongoose.connect(mongoUri, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
+        logger.info(`startDB() - Sensor Simulator Database connected using this URI: ${mongoUri}`)
+    }
+    catch (e) {
+        logger.error(`startDB() - Database connection err: ${mongoUri} - ${e.message}`)
+    }
 }
 startDB();
 
@@ -39,10 +46,10 @@ cron.schedule('* * * * *', async function () {
 
         // Save this data to your database
         await newSensorData.save();
-        console.log(`Generating simulated sensor data... ${new Date()}`);
+        logger.info(`Generating simulated sensor data... ${new Date()}`);
     }
     catch (err) {
-        console.log({ err })
+        logger.error(`Cronjob err: ${err.message}`)
     }
 });
 

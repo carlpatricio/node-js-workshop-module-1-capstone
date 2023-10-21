@@ -1,6 +1,7 @@
 import sendGrind from '@sendgrid/mail';
 import dotenv from 'dotenv';
 import { SUBJECT } from './constants.js';
+import { logger } from './logger.js';
 
 dotenv.config();
 sendGrind.setApiKey(process.env.SEND_GRID_API_KEY)
@@ -22,10 +23,10 @@ export const sendEmail = async (emailPayload) => {
          * send email
          */
         const res = await sendGrind.send(msg);
-
+        logger.info(`sendEmail() - ${text} email sent to ${to}`);
         return res;
     } catch (error) {
-        console.log(error);
+        logger.error(`sendEmail() - error: ${error.message}`);
         return error;
     }
 };
