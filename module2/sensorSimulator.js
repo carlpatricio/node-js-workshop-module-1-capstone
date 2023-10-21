@@ -2,16 +2,20 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cron from 'node-cron';
 import { SensorData } from './src/model/sensorData.model.js';
+import { getServerURI } from './src/util/connection.js';
 // Load environment variables
 dotenv.config();
 
-// Connect to your MongoDB database
-mongoose.connect(`${process.env.MONGODB_URI_PROD}/module2`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
-
-
+const startDB = async () => {
+    const mongoUri = await getServerURI();
+    console.log({ mongoUri })
+    // Connect to your MongoDB database
+    mongoose.connect(mongoUri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    });
+}
+startDB();
 
 // Function to generate random sensor data
 function generateSensorData() {
@@ -27,8 +31,7 @@ function generateSensorData() {
 
 // Scheduled task for sensor data simulation
 // This cron job is set to run every 10 minutes. You can adjust the timing as needed.
-cron.schedule('5 * * * * *', async function () {
-    console.log(`Generating simulated sensor data... ${new Date()}`);
+cron.schedule('* * * * *', async function () {
 
     try {
         // Create new sensor data
@@ -36,6 +39,7 @@ cron.schedule('5 * * * * *', async function () {
 
         // Save this data to your database
         await newSensorData.save();
+        console.log(`Generating simulated sensor data... ${new Date()}`);
     }
     catch (err) {
         console.log({ err })
