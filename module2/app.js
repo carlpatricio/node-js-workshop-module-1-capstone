@@ -2,6 +2,7 @@
 import dotenv from 'dotenv';
 import express from "express";
 import { startDatabase } from './src/util/connection.js';
+import { logger } from './src/util/logger.js';
 import { handleUnknownRoutes } from './src/util/util.js';
 
 dotenv.config();
@@ -26,4 +27,4 @@ const app = express();
  */
 app.use('*', handleUnknownRoutes);
 app.use(express.json());
-app.listen(PORT, () => console.log(`Server running at port : ${PORT}`));
+app.listen(PORT, () => logger.info(`Server running at port : ${PORT}`));

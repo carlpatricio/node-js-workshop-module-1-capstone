@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { SensorData } from '../model/sensorData.model.js';
 import { HUMIDITY_EMAIL_TEXT, HUMIDITY_THRESHOLD } from './constants.js';
+import { logger } from './logger.js';
 import { sendEmail } from './mail.js';
 
 export const startDatabase = async () => {
@@ -8,25 +9,17 @@ export const startDatabase = async () => {
     /**
      * Database connect
      */
-    mongoose.connect(`${mongoUri}`, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    });
-    /**
-     * on open connection
-     */
-    mongoose.connection.on('open', () => {
-        console.log(`Database connected using this URI: ${mongoUri}`)
-
-        SensorData.watch().
-            on('change', handleDatachanges)
-    })
-    /**
-     * on close connection
-     */
-    mongoose.connection.on('close', () => {
-        console.log("mongodb connection close");
-    })
+    try {
+        await mongoose.connect(`${mongoUri}`, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
+        logger.info(`Database connected using this URI: ${mongoUri}`)
+        SensorData.watch().on('change', handleDatachanges)
+    }
+    catch (e) {
+        logger.error(`Database connection err: ${mongoUri} - ${e.message}`)
+    }
 }
 
 export const getServerURI = async () => {
@@ -54,9 +47,9 @@ const handleDatachanges = async (data) => {
 }
 
 const handleHumidity = async (humidityPercent) => {
-    console.log('Checking humidity percentage....')
+    logger.info('Checking humidity percentage....')
     if (humidityPercent > HUMIDITY_THRESHOLD) {
-        const html = `Humidity Percent hit <b>${humidityPercent}</b> above our`;
+        const html = `Humidity Percent hit <b>${humidityPercent}</b> above our ${HUMIDITY_THRESHOLD} threshold`;
         const res = await sendEmail({
             text: HUMIDITY_EMAIL_TEXT,
             to: process.env.RECEIVER_EMAIL,
@@ -64,8 +57,8 @@ const handleHumidity = async (humidityPercent) => {
             html
         });
 
-        console.log(`Humidity Percent Threshold email notif sent`);
-        return;
+        logger.info(`Humidity Percent Threshold email notif sent`);
+        return res;
     }
-    console.log(`Humidity Percentage is normal ${humidityPercent}`);
+    logger.info(`Humidity Percentage is normal ${humidityPercent}`);
 }
