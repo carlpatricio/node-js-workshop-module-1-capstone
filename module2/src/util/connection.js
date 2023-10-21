@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 import { SensorData } from '../model/sensorData.model.js';
+import { HUMIDITY_EMAIL_TEXT, HUMIDITY_THRESHOLD } from './constants.js';
+import { sendEmail } from './mail.js';
 
 export const startDatabase = async () => {
     const mongoUri = await getServerURI();
@@ -41,8 +43,29 @@ export const getServerURI = async () => {
     }
 }
 
-const handleDatachanges = (data) => {
-    const { fullDocument } = data;
+const handleDatachanges = async (data) => {
+    const { humidity_percent } = data.fullDocument;
 
-    console.log({ fullDocument })
+    handleHumidity(humidity_percent);
+    /**
+     * TODO: add more sensor data handling
+     * refer to handleHumidity
+     */
+}
+
+const handleHumidity = async (humidityPercent) => {
+    console.log('Checking humidity percentage....')
+    if (humidityPercent > HUMIDITY_THRESHOLD) {
+        const html = `Humidity Percent hit <b>${humidityPercent}</b> above our`;
+        const res = await sendEmail({
+            text: HUMIDITY_EMAIL_TEXT,
+            to: process.env.RECEIVER_EMAIL,
+            text: "test",
+            html
+        });
+
+        console.log(`Humidity Percent Threshold email notif sent`);
+        return;
+    }
+    console.log(`Humidity Percentage is normal ${humidityPercent}`);
 }
