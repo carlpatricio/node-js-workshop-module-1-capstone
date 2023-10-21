@@ -1,6 +1,7 @@
 
 import dotenv from 'dotenv';
 import express from "express";
+import { handleError } from './src/middleware/error.middleware.js';
 import { startDatabase } from './src/util/connection.js';
 import { logger } from './src/util/logger.js';
 import { handleUnknownRoutes } from './src/util/util.js';
@@ -18,6 +19,7 @@ const app = express();
 /**
  * middleware
  */
+app.use(express.json());
 
 /**
  * routes
@@ -26,5 +28,5 @@ const app = express();
  * unknown routes handler
  */
 app.use('*', handleUnknownRoutes);
-app.use(express.json());
+app.use(handleError); /** Handle global error for express app */
 app.listen(PORT, () => logger.info(`Server running at port : ${PORT}`));
