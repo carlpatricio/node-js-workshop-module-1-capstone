@@ -1,6 +1,8 @@
 import { Router } from 'express';
+import { validatorMiddleware } from '../middleware/index.js';
 import { SensorData } from '../model/index.js';
 import { PAGE_LIMIT, SENSOR_DATA_PROJECTION } from '../util/constants.js';
+import { sensorDataValidator } from '../validator/index.js';
 
 const sensorDataRouter = Router();
 /**
@@ -53,7 +55,9 @@ sensorDataRouter.get('/sensorData/page/:pageNumber', async (req, res, next) => {
         next(err);
     }
 });
-
+/**
+ * Fetch single sensor data using id
+ */
 sensorDataRouter.get('/sensorData/id/:id', async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -78,6 +82,33 @@ sensorDataRouter.get('/sensorData/id/:id', async (req, res, next) => {
         next(err);
     }
 });
+/**
+ * Create new sensor data
+ */
+sensorDataRouter.post('/sensorData',
+    validatorMiddleware(sensorDataValidator),
+    async (req, res, next) => {
+        try {
+            const { body } = req;
+            /**
+             * form sensordata model using body
+             */
+            const sensorData = new SensorData(body);
+            /**
+             * saving of new data
+             */
+            await sensorData.save();
+            return res.status(201).json({
+                message: 'Data successfully created!'
+            });
+        }
+        catch (err) {
+            next(err);
+        }
+    }
+)
+
+
 
 export { sensorDataRouter };
 
