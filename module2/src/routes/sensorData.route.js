@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { validatorMiddleware } from '../middleware/index.js';
 import { SensorData } from '../model/index.js';
 import { PAGE_LIMIT, SENSOR_DATA_PROJECTION } from '../util/constants.js';
-import { sensorDataValidator } from '../validator/index.js';
+import { sensorDataValidator, updateSensorDataValidator } from '../validator/index.js';
 
 const sensorDataRouter = Router();
 /**
@@ -64,7 +64,7 @@ sensorDataRouter.get('/sensorData/id/:id', async (req, res, next) => {
         /**
          * arr of field to be selected in query
          */
-        const data = await SensorData.findById(id, SENSOR_DATA_PROJECTION);
+        const data = await SensorData.findById(id, SENSOR_DATA_PROJECTION).lean();
 
         if (!data) {
             res.status(404)
@@ -100,6 +100,42 @@ sensorDataRouter.post('/sensorData',
             await sensorData.save();
             return res.status(201).json({
                 message: 'Data successfully created!'
+            });
+        }
+        catch (err) {
+            next(err);
+        }
+    }
+)
+/**
+ * update existing sensor data
+ */
+sensorDataRouter.put('/sensorData/:id',
+    validatorMiddleware(updateSensorDataValidator),
+    async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            if (!id) throw new Error('ID is empty or null')
+            const { body } = req;
+
+            const updatedSensorData = await SensorData.findByIdAndUpdate(id, {
+                ...body
+            }).lean();
+
+            if (!updatedSensorData) {
+                res.status(404);
+                throw new Error(`Sensor Data with this id: ${id} not found`)
+            }
+            /**
+             * format updatedData since updatedSensorData 
+             * is showing the state before update
+             * 
+             * unable to use spreadoperator cause it also including other model properties
+             */
+            const updatedData = Object.assign({}, updatedSensorData, body);
+            return res.status(200).json({
+                updatedData,
+                message: 'Successfully updated!'
             });
         }
         catch (err) {
