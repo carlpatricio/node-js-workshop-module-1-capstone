@@ -37,6 +37,15 @@ export const getServerURI = async () => {
 }
 
 const handleDatachanges = async (data) => {
+    if (!data) {
+        logger.info('handleDataChanges() - data received from stream is empty/null')
+        return;
+    }
+    const { operationType } = data;
+    /**
+     * only insert action will proceed
+     */
+    if (operationType !== 'insert') return;
     const { humidity_percent } = data.fullDocument;
 
     handleHumidity(humidity_percent);
