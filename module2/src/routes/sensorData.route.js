@@ -124,7 +124,7 @@ sensorDataRouter.put('/sensorData/:id',
 
             if (!updatedSensorData) {
                 res.status(404);
-                throw new Error(`Sensor Data with this id: ${id} not found`)
+                throw new Error(`Sensor Data with this id: ${id} not found`);
             }
             /**
              * format updatedData since updatedSensorData 
@@ -142,7 +142,26 @@ sensorDataRouter.put('/sensorData/:id',
             next(err);
         }
     }
-)
+);
+/**
+ * delete sensor data using id
+ */
+sensorDataRouter.delete('/sensorData/:id', async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        if (!id) throw new Error('ID is empty or null');
+
+        const deletedData = await SensorData.findByIdAndDelete(id).lean();
+        if (!deletedData) {
+            res.status(404);
+            throw new Error(`Sensor Data with this id: ${id} not found`);
+        }
+
+        return res.status(204).send();
+    } catch (err) {
+        next(err);
+    }
+});
 
 
 
