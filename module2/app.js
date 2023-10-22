@@ -2,6 +2,7 @@
 import dotenv from 'dotenv';
 import express from "express";
 import { handleError } from './src/middleware/error.middleware.js';
+import { loggerMiddleware } from './src/middleware/logger.middleware.js';
 import { startDatabase } from './src/util/connection.js';
 import { logger } from './src/util/logger.js';
 import { handleUnknownRoutes } from './src/util/util.js';
@@ -20,7 +21,7 @@ const app = express();
  * middleware
  */
 app.use(express.json());
-
+app.use(loggerMiddleware)
 /**
  * routes
  */
