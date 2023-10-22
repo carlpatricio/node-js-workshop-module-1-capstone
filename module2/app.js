@@ -1,11 +1,8 @@
 
 import dotenv from 'dotenv';
 import express from "express";
-import { handleError } from './src/middleware/error.middleware.js';
-import { loggerMiddleware } from './src/middleware/logger.middleware.js';
-import { startDatabase } from './src/util/connection.js';
-import { logger } from './src/util/logger.js';
-import { handleUnknownRoutes } from './src/util/util.js';
+import { handleError, loggerMiddleware } from './src/middleware/index.js';
+import { handleUnknownRoutes, logger, startDatabase } from './src/util/index.js';
 
 dotenv.config();
 startDatabase();

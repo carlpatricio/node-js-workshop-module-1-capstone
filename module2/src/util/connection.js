@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { SensorData } from '../model/sensorData.model.js';
+import { SensorData } from '../model/index.js';
 import { HUMIDITY_EMAIL_TEXT, HUMIDITY_THRESHOLD } from './constants.js';
 import { logger } from './logger.js';
 import { sendEmail } from './mail.js';
