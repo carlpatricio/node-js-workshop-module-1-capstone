@@ -1,14 +1,18 @@
 
 
-export const handleUnknownRoutes = (req, res) => {
+export const handleUnknownRoutes = (req, res, next) => {
     /**
      * destructuring req
      */
-    const { baseUrl } = req
+    const { baseUrl, responsePayload } = req
+    /**
+     * if theres a responsePayload it will lead you over to the next middleware
+     */
+    if (responsePayload) return next()
     /**
      * return 404 response
      */
-    res.status(404).json({
+    return res.status(404).json({
         errorMessage: `${baseUrl} not found`
     })
 }
