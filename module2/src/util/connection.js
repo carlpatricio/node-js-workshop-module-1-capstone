@@ -30,7 +30,6 @@ export const getServerURI = async () => {
             /**
              * insert db name on mongo db repl set uri
              */
-            console.log(`${rawURI[0]}${dbName}?${rawURI[1]}`)
             return `${rawURI[0]}${dbName}?${rawURI[1]}`;
         default:
             return `${process.env[`MONGODB_URI_${env.toUpperCase()}`]}/${dbName}`;
