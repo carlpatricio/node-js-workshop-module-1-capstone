@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cron from 'node-cron';
-import { SensorData } from './src/model/index.js';
-import { getServerURI, logger } from './src/util/index.js';
+import { SensorData } from '../src/model/index.js';
+import { getServerURI, logger } from '../src/util/index.js';
 // Load environment variables
 dotenv.config();
 

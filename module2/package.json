@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:sensor": "node sensorSimulator.js",
+    "start:sensor": "node ./cronjob/sensorSimulator.js",
     "start:watch": "nodemon app.js",
     "start:dev": "node app.js"
   },
