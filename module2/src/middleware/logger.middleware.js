@@ -1,10 +1,18 @@
+import { API_DOCS_STRING } from "../util/constants.js";
 import { logger } from "../util/logger.js";
 
 /**
  * should have request_uuid for better tracing of logs
  */
 export const loggerMiddleware = (req, res, next) => {
-    const { method, originalUrl, body, params, query } = req
+    const { method, originalUrl, body, params, query } = req;
+    /**
+     * skip logging for api docs 
+     */
+    if (originalUrl.includes(API_DOCS_STRING)) return next();
+    /**
+     * log request
+     */
     logger.info(`[${method}][${originalUrl}] - ` +
         `Request Body: ${JSON.stringify(body)} Params: ${JSON.stringify(params)} ` +
         `Query: ${JSON.stringify(query)}`);

@@ -1,10 +1,13 @@
 
 import dotenv from 'dotenv';
 import express from "express";
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
 import { handleError, loggerMiddleware, responseLoggerMiddleware } from './src/middleware/index.js';
 import { sensorDataRouter } from './src/routes/index.js';
 import { handleUnknownRoutes, logger, startDatabase } from './src/util/index.js';
 
+const swaggerDocument = YAML.load('./doc/swagger.yaml')
 dotenv.config();
 startDatabase();
 /**
@@ -20,6 +23,10 @@ const app = express();
  */
 app.use(express.json());
 app.use(loggerMiddleware);
+/**
+ * API doc
+ */
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 /**
  * routes
  */
