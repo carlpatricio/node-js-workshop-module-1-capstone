@@ -59,11 +59,11 @@ const handleDatachanges = async (data) => {
 const handleHumidity = async (humidityPercent) => {
     logger.info('Checking humidity percentage....')
     if (humidityPercent > HUMIDITY_THRESHOLD) {
-        const html = `Humidity Percent hit <b>${humidityPercent}</b> above our ${HUMIDITY_THRESHOLD} threshold`;
+        const html = `Humidity Percent hit <b>${humidityPercent}</b> beyond our ${HUMIDITY_THRESHOLD} threshold`;
         const res = await sendEmail({
             text: HUMIDITY_EMAIL_TEXT,
             to: process.env.RECEIVER_EMAIL,
-            text: "test",
+            text: HUMIDITY_EMAIL_TEXT,
             html
         });
 
